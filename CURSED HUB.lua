@@ -121,7 +121,7 @@ local getupvalues = (debug and debug.getupvalues) or getupvalues
 local getconns    = getconnections or (debug and debug.getconnections)
 local setupv      = (debug and debug.setupvalue) or setupvalue
 
-local CONFIG_FILE = "sologamex_hub_code_redeemer.json"
+local CONFIG_FILE = "cursed_hub_code_redeemer.json"
 local cfg = {
 sniper        = true,
 autoSubmit    = true,
@@ -1075,7 +1075,7 @@ end
 local function riddleSystemPrompt()
   if _riddleSystemCache then return _riddleSystemCache end
   _riddleSystemCache = [[
-  You are the SoloGAMEX's HUB riddle engine for the Roblox game Steal a Brainrot.
+  You are the SoloGAMEXs HUB riddle engine for the Roblox game Steal a Brainrot.
 
   OUTPUT RULE: Return exactly ONE line containing only the final answer. Never add a label, explanation, quote, markdown, punctuation around it, apology, or refusal.
 
@@ -1851,7 +1851,7 @@ corner(UI.LauncherLogo, 99)
 
 UI.LauncherTitle = label(Launcher, "", 16, Theme.Text, Enum.Font.GothamBlack)
 UI.LauncherTitle.RichText = true
-UI.LauncherTitle.Text = '<font color="rgb(255,112,120)">SoloGAMEX's</font><font color="rgb(255,255,255)"> HUB</font>'
+UI.LauncherTitle.Text = '<font color="rgb(255,112,120)">SoloGAMEXs</font><font color="rgb(255,255,255)"> HUB</font>'
 UI.LauncherTitle.Size = UDim2.fromOffset(118, 66)
 UI.LauncherTitle.Position = UDim2.fromOffset(65, 0)
 
@@ -2008,9 +2008,9 @@ ScaleType = Enum.ScaleType.Fit,
 }, UI.HeaderLogoFrame)
 corner(UI.HeaderLogo, 99)
 
-UI.Brand = label(UI.Header, "SoloGAMEX's CODE REDEEMER", 14, Theme.Text, Enum.Font.GothamBlack, Enum.TextXAlignment.Left)
+UI.Brand = label(UI.Header, "SoloGAMEXs CODE REDEEMER", 14, Theme.Text, Enum.Font.GothamBlack, Enum.TextXAlignment.Left)
 UI.Brand.RichText = true
-UI.Brand.Text = '<font color="rgb(235,38,48)">SoloGAMEX's</font><font color="rgb(255,255,255)"> CODE REDEEMER</font>'
+UI.Brand.Text = '<font color="rgb(235,38,48)">SoloGAMEXs</font><font color="rgb(255,255,255)"> CODE REDEEMER</font>'
 UI.Brand.Size = UDim2.fromOffset(215, 22)
 UI.Brand.Position = UDim2.fromOffset(79, 20)
 
@@ -2637,7 +2637,7 @@ BorderSizePixel = 0,
 corner(UI.LogoTile, 8)
 stroke(UI.LogoTile, Theme.AccentLight, 1, 0.4)
 
-UI.WordMark = label(UI.BottomBar, "SoloGAMEX's", 15, Theme.AccentLight, Enum.Font.GothamBlack)
+UI.WordMark = label(UI.BottomBar, "SoloGAMEXs", 15, Theme.AccentLight, Enum.Font.GothamBlack)
 UI.WordMark.Size = UDim2.fromOffset(46, 20)
 UI.WordMark.Position = UDim2.fromOffset(40, 4)
 
@@ -2645,7 +2645,7 @@ UI.BarDivider = label(UI.BottomBar, "|", 14, Theme.AccentLight, Enum.Font.Gotham
 UI.BarDivider.Size = UDim2.fromOffset(10, 20)
 UI.BarDivider.Position = UDim2.fromOffset(84, 4)
 
-UI.FullMark = label(UI.BottomBar, "SoloGAMEX's HUB", 12, Theme.AccentLight, Enum.Font.GothamBold)
+UI.FullMark = label(UI.BottomBar, "SoloGAMEXs HUB", 12, Theme.AccentLight, Enum.Font.GothamBold)
 UI.FullMark.Size = UDim2.fromOffset(80, 20)
 UI.FullMark.Position = UDim2.fromOffset(96, 4)
 
@@ -2657,7 +2657,7 @@ UI.SolvedLabel = label(UI.BottomBar, "0 solved / 0 asked", 9, Theme.Green, Enum.
 UI.SolvedLabel.Size = UDim2.fromOffset(110, 38)
 UI.SolvedLabel.Position = UDim2.new(1, -118, 0, 0)
 
-UI.Footer = label(Window, "SoloGAMEX's SYSTEMS  •  CODE REDEEMER", 9, Theme.Dim,
+UI.Footer = label(Window, "SoloGAMEXs SYSTEMS  •  CODE REDEEMER", 9, Theme.Dim,
 Enum.Font.GothamBold, Enum.TextXAlignment.Center)
 UI.Footer.Size = UDim2.new(1, -28, 0, 18)
 UI.Footer.Position = UDim2.new(0, 14, 1, -22)
@@ -2876,7 +2876,7 @@ end
 
 applyPowerVisual()
 bumpSolvedLabel()
-logRich('<font color="' .. LOG.acc .. '">SoloGAMEX's REDEEMER loaded</font>')
+logRich('<font color="' .. LOG.acc .. '">SoloGAMEXs REDEEMER loaded</font>')
 logRich('<font color="' .. LOG.dim .. '">SoloGAMEX is my sempai</font>')
 logRich('<font color="' .. LOG.dim .. '">waiting for a code...</font>')
 
