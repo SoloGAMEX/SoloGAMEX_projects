@@ -1844,7 +1844,7 @@ Size = UDim2.fromOffset(40, 40),
 Position = UDim2.fromOffset(4, 4),
 BackgroundTransparency = 1,
 BorderSizePixel = 0,
-Image = "rbxassetid://117157091563742",
+Image = "rbxassetid://112198664835312",
 ScaleType = Enum.ScaleType.Fit,
 }, UI.LauncherLogoFrame)
 corner(UI.LauncherLogo, 99)
@@ -2003,7 +2003,7 @@ Size = UDim2.fromOffset(42, 42),
 Position = UDim2.fromOffset(5, 5),
 BackgroundTransparency = 1,
 BorderSizePixel = 0,
-Image = "rbxassetid://117157091563742",
+Image = "rbxassetid://112198664835312",
 ScaleType = Enum.ScaleType.Fit,
 }, UI.HeaderLogoFrame)
 corner(UI.HeaderLogo, 99)
