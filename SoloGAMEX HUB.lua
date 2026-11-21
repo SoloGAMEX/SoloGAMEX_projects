@@ -1051,9 +1051,9 @@ local out = table.concat(answers, "")
 if suffix and out:sub(-#suffix) ~= suffix then out = out .. suffix end
 return out, breakdown, (missing > 0) and (missing .. (missing == 1 and " part" or " parts") .. " not in database") or nil
 end
-local RIDDLE_API_KEY = "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"
-local RIDDLE_API_URL = ""
-local RIDDLE_API_MODEL = "openai/gpt-oss-120b"
+local RIDDLE_API_KEY = "NO_AI_IN_FREE_VERSION"
+local RIDDLE_API_URL = "NO_AI_IN_FREE_VERSION"
+local RIDDLE_API_MODEL = "gpt-6.2-sol"
 local _riddleKnowledgeCache, _riddleSystemCache
 
 local function executorRequest()
@@ -1651,22 +1651,23 @@ helperAntiRagdollConn = RunService.Heartbeat:Connect(function()
 end)
 end
 local UI = {}
-local CURSED_RED = Color3.fromRGB(235, 38, 48)
-local ACTIVE_GREEN = Color3.fromRGB(45, 214, 96)
+local CURSED_RED = Color3.fromRGB(65, 145, 205)
+local ACTIVE_GREEN = Color3.fromRGB(76, 190, 95)
 
 local Theme = {
-MainBackground = Color3.fromRGB(12, 12, 14),  Background = Color3.fromRGB(20, 20, 23),
-Panel          = Color3.fromRGB(28, 28, 32),  Row        = Color3.fromRGB(38, 38, 43),
-RowHover       = Color3.fromRGB(50, 50, 57),
-Accent         = CURSED_RED, AccentLight = Color3.fromRGB(175, 28, 36),
+MainBackground = Color3.fromRGB(255, 255, 255),
+Background     = Color3.fromRGB(255, 255, 255),
+Panel          = Color3.fromRGB(247, 249, 251), Row = Color3.fromRGB(237, 242, 246),
+RowHover       = Color3.fromRGB(225, 234, 241),
+Accent         = CURSED_RED, AccentLight = Color3.fromRGB(105, 177, 224),
 Green          = ACTIVE_GREEN,
-Red            = Color3.fromRGB(226, 72, 80),  Red2 = Color3.fromRGB(190, 54, 62),
-Text           = Color3.fromRGB(255, 255, 255), Dim = Color3.fromRGB(138, 138, 150),
-Stroke         = Color3.fromRGB(44, 44, 50),
-SoftButton     = Color3.fromRGB(38, 38, 43),  SoftButtonHover = Color3.fromRGB(50, 50, 57),
-SoftAccent     = Color3.fromRGB(42, 18, 20),
-ToggleOff      = Color3.fromRGB(58, 58, 66),  ToggleOff2 = Color3.fromRGB(30, 30, 34),
-InputBg        = Color3.fromRGB(16, 16, 19),  SliderBg = Color3.fromRGB(44, 44, 50),
+Red            = Color3.fromRGB(226, 72, 80), Red2 = Color3.fromRGB(190, 54, 62),
+Text           = Color3.fromRGB(35, 45, 55), Dim = Color3.fromRGB(105, 117, 128),
+Stroke         = Color3.fromRGB(195, 207, 216),
+SoftButton     = Color3.fromRGB(232, 238, 243), SoftButtonHover = Color3.fromRGB(216, 228, 237),
+SoftAccent     = Color3.fromRGB(63, 126, 163),
+ToggleOff      = Color3.fromRGB(190, 200, 208), ToggleOff2 = Color3.fromRGB(225, 230, 234),
+InputBg        = Color3.fromRGB(245, 247, 249), SliderBg = Color3.fromRGB(220, 228, 234),
 }
 
 local T = {
@@ -1677,12 +1678,12 @@ sub = Theme.Dim, ok = Theme.Green, err = Theme.Red, warn = Color3.fromRGB(250, 2
 }
 
 local LOG = {
-dim   = "rgb(138,138,150)",
+dim   = "rgb(105,117,128)",
 white = "rgb(255,255,255)",
 ok    = "rgb(45,214,96)",
 err   = "rgb(226,72,80)",
 warn  = "rgb(250,204,90)",
-acc   = "rgb(235,38,48)",
+acc   = "rgb(65,145,205)",
 cyan  = "rgb(255,255,255)",
 }
 
@@ -1693,7 +1694,9 @@ local function new(class, props, parent)
   return inst
 end
 local function corner(o, r)
-  local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, r); c.Parent = o;
+  local c = Instance.new("UICorner")
+  c.CornerRadius = UDim.new(0, (o:IsA("TextButton") or o:IsA("ImageButton")) and 0 or r)
+  c.Parent = o
   return c
 end
 local function stroke(o, col, th, tr)
@@ -1713,20 +1716,9 @@ local function addOutline(f)
   return o
 end
 local function decoratePanel(f)
-  local g = Instance.new("UIGradient", f); g.Rotation = 90
-  g.Color = ColorSequence.new{
-  ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-  ColorSequenceKeypoint.new(1, Color3.fromRGB(188, 188, 188)),
-}
-local hl = Instance.new("Frame")
-hl.Size = UDim2.new(1, -16, 0, 1); hl.Position = UDim2.new(0, 8, 0, 1)
-hl.BackgroundColor3 = Color3.fromRGB(243, 243, 243); hl.BackgroundTransparency = 0.5
-hl.BorderSizePixel = 0; hl.ZIndex = 6; hl.Parent = f
-local hlg = Instance.new("UIGradient", hl)
-hlg.Transparency = NumberSequence.new{
-NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.5, 0), NumberSequenceKeypoint.new(1, 1),
-}
-return g
+  f.BackgroundColor3 = Color3.fromRGB(8, 10, 14)
+  f.BackgroundTransparency = 0.28
+  return nil
 end
 local function label(parent, text, size, color, font, align)
   return new("TextLabel", {
@@ -1779,73 +1771,48 @@ local Launcher = new("Frame", {
 Name = "Launcher",
 Size = UDim2.fromOffset(570, 66),
 Position = UDim2.new(0.5, -285, 0, 16),
-BackgroundColor3 = Color3.fromRGB(114, 9, 19),
-BackgroundTransparency = 0.01,
+BackgroundColor3 = Color3.fromRGB(63, 126, 163),
+BackgroundTransparency = 0,
 BorderSizePixel = 0,
 Active = true,
 }, Master)
-corner(Launcher, 99)
-stroke(Launcher, Color3.fromRGB(255, 78, 88), 1.25, 0.12)
-new("UIGradient", {
-Color = ColorSequence.new{
-ColorSequenceKeypoint.new(0, Color3.fromRGB(168, 12, 27)),
-ColorSequenceKeypoint.new(0.46, Color3.fromRGB(103, 7, 18)),
-ColorSequenceKeypoint.new(1, Color3.fromRGB(48, 8, 14)),
-},
-Rotation = 8,
-}, Launcher)
+corner(Launcher, 4)
+stroke(Launcher, Color3.fromRGB(43, 103, 143), 1.25, 0)
 
 UI.LauncherInner = new("Frame", {
-Size = UDim2.new(1, -6, 1, -6),
-Position = UDim2.fromOffset(3, 3),
-BackgroundColor3 = Color3.fromRGB(8, 8, 11),
-BackgroundTransparency = 0.42,
+Size = UDim2.new(1, -2, 1, -2),
+Position = UDim2.fromOffset(1, 1),
+BackgroundColor3 = Color3.fromRGB(63, 126, 163),
+BackgroundTransparency = 0,
 BorderSizePixel = 0,
 }, Launcher)
-corner(UI.LauncherInner, 99)
-new("UIGradient", {
-Color = ColorSequence.new{
-ColorSequenceKeypoint.new(0, Color3.fromRGB(88, 11, 21)),
-ColorSequenceKeypoint.new(0.48, Color3.fromRGB(18, 11, 15)),
-ColorSequenceKeypoint.new(1, Color3.fromRGB(40, 8, 14)),
-},
-}, UI.LauncherInner)
+corner(UI.LauncherInner, 3)
+UI.LauncherInner.ZIndex = 0
 
 UI.LauncherShadow = new("Frame", {
 Size = UDim2.new(1, -18, 1, -4),
 Position = UDim2.new(0, 9, 0, 8),
-BackgroundColor3 = Color3.fromRGB(235, 38, 48),
-BackgroundTransparency = 0.82,
+BackgroundTransparency = 1,
 BorderSizePixel = 0,
 ZIndex = 0,
 }, Launcher)
-corner(UI.LauncherShadow, 99)
 
 UI.LauncherGlow = new("Frame", {
-Name = "RedDecoration",
-Size = UDim2.new(1, -44, 0, 2),
-Position = UDim2.new(0, 22, 1, -3),
-BackgroundColor3 = CURSED_RED,
-BackgroundTransparency = 0.1,
+Name = "BlueDecoration",
+Size = UDim2.new(1, -44, 0, 1),
+Position = UDim2.new(0, 22, 1, -2),
+BackgroundColor3 = Color3.fromRGB(190, 225, 245),
+BackgroundTransparency = 0.15,
 BorderSizePixel = 0,
 }, Launcher)
-corner(UI.LauncherGlow, 99)
-new("UIGradient", {
-Transparency = NumberSequence.new{
-NumberSequenceKeypoint.new(0, 1),
-NumberSequenceKeypoint.new(0.22, 0.2),
-NumberSequenceKeypoint.new(0.78, 0.2),
-NumberSequenceKeypoint.new(1, 1),
-},
-}, UI.LauncherGlow)
 
 UI.LauncherLogoFrame = new("Frame", {
 Size = UDim2.fromOffset(48, 48),
 Position = UDim2.fromOffset(9, 9),
-BackgroundColor3 = Color3.fromRGB(35, 7, 12),
+BackgroundColor3 = Color3.fromRGB(48, 105, 140),
 BorderSizePixel = 0,
 }, Launcher)
-corner(UI.LauncherLogoFrame, 99)
+corner(UI.LauncherLogoFrame, 4)
 
 UI.LauncherLogo = new("ImageLabel", {
 Size = UDim2.fromOffset(40, 40),
@@ -1855,24 +1822,21 @@ BorderSizePixel = 0,
 Image = "rbxassetid://112198664835312",
 ScaleType = Enum.ScaleType.Fit,
 }, UI.LauncherLogoFrame)
-corner(UI.LauncherLogo, 99)
+corner(UI.LauncherLogo, 3)
 
-UI.LauncherTitle = label(Launcher, "", 16, Theme.Text, Enum.Font.GothamBlack)
+UI.LauncherTitle = label(Launcher, "", 16, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBlack)
 UI.LauncherTitle.RichText = true
-UI.LauncherTitle.Text = '<font color="rgb(255,112,120)">SoloGAMEXs</font><font color="rgb(255,255,255)"> HUB</font>'
+UI.LauncherTitle.Text = '<font color="rgb(255,255,255)">SoloGAMEXs</font><font color="rgb(255,255,255)"> HUB</font>'
 UI.LauncherTitle.Size = UDim2.fromOffset(118, 66)
 UI.LauncherTitle.Position = UDim2.fromOffset(65, 0)
 
-UI.DebobCredit = label(Master, "SoloGAMEX is my sempai", 9, Color3.fromRGB(255, 143, 149),
-Enum.Font.GothamBlack, Enum.TextXAlignment.Center)
-UI.DebobCredit.Size = UDim2.fromOffset(240, 14)
-UI.DebobCredit.Position = UDim2.new(0.5, 0, 0, 1)
+
 
 UI.LauncherDivider = new("Frame", {
 Size = UDim2.fromOffset(1, 30),
 Position = UDim2.fromOffset(182, 18),
-BackgroundColor3 = Color3.fromRGB(255, 143, 149),
-BackgroundTransparency = 0.52,
+BackgroundColor3 = Color3.fromRGB(220, 238, 250),
+BackgroundTransparency = 0.45,
 BorderSizePixel = 0,
 }, Launcher)
 
@@ -1897,7 +1861,7 @@ BorderSizePixel = 0,
 }, RedeemerBtn)
 corner(UI.RedeemerDot, 10)
 
-UI.RedeemerText = label(RedeemerBtn, "CODE REDEEMER", 11, Theme.Text, Enum.Font.GothamBold)
+UI.RedeemerText = label(RedeemerBtn, "CODE REDEEMER", 11, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBold)
 UI.RedeemerText.Size = UDim2.new(1, -72, 1, 0)
 UI.RedeemerText.Position = UDim2.fromOffset(31, 0)
 
@@ -1910,7 +1874,7 @@ local MenuBtn = new("TextButton", {
 Name = "MenuButton",
 Size = UDim2.fromOffset(123, 42),
 Position = UDim2.new(1, -135, 0, 12),
-BackgroundColor3 = Color3.fromRGB(28, 28, 32),
+BackgroundColor3 = Color3.fromRGB(46, 170, 86),
 BorderSizePixel = 0,
 AutoButtonColor = false,
 Active = true,
@@ -1919,10 +1883,16 @@ TextSize = 11,
 TextColor3 = Theme.Text,
 Font = Enum.Font.GothamBlack,
 }, Launcher)
-corner(MenuBtn, 99)
-stroke(MenuBtn, CURSED_RED, 1, 0.18)
-MenuBtn.MouseEnter:Connect(function() tw(MenuBtn, { BackgroundColor3 = Color3.fromRGB(48, 24, 27) }, 0.12) end)
-MenuBtn.MouseLeave:Connect(function() tw(MenuBtn, { BackgroundColor3 = Color3.fromRGB(28, 28, 32) }, 0.12) end)
+corner(MenuBtn, 4)
+stroke(MenuBtn, Color3.fromRGB(190, 225, 245), 1, 0.15)
+MenuBtn.MouseEnter:Connect(function()
+  local isOpen = MenuBtn.Text == "CLOSE"
+  tw(MenuBtn, { BackgroundColor3 = isOpen and Color3.fromRGB(175, 42, 48) or Color3.fromRGB(35, 145, 72) }, 0.12)
+end)
+MenuBtn.MouseLeave:Connect(function()
+  local isOpen = MenuBtn.Text == "CLOSE"
+  tw(MenuBtn, { BackgroundColor3 = isOpen and Color3.fromRGB(205, 48, 55) or Color3.fromRGB(46, 170, 86) }, 0.12)
+end)
 
 local viewportConn
 local function recalculateScale()
@@ -1955,44 +1925,25 @@ local Window = new("Frame", {
 Name = "CursedHubRedeemerMenu",
 Size = UDim2.fromOffset(WIN_W, WIN_H),
 Position = UDim2.new(0.5, -205, 0, 82),
-BackgroundColor3 = Theme.Background,
-BackgroundTransparency = 0.18,
+BackgroundColor3 = Color3.fromRGB(8, 10, 14),
+BackgroundTransparency = 0.28,
 BorderSizePixel = 0,
 Active = true,
 ClipsDescendants = true,
 Visible = false,
 }, Master)
-corner(Window, 24)
+corner(Window, 4)
 UI.WindowOutline = addOutline(Window)
 decoratePanel(Window)
 local MenuScale = new("UIScale", { Name = "CursedMenuScale", Scale = cfg.menuScale }, Window)
 
-UI.BackgroundImage = new("ImageLabel", {
-Name = "BackgroundImage",
-Size = UDim2.fromScale(1, 1),
-BackgroundTransparency = 1,
-BorderSizePixel = 0,
-Image = "rbxassetid://106784581562312",
-ImageTransparency = 0.06,
-ScaleType = Enum.ScaleType.Crop,
-ZIndex = 1,
-}, Window)
-corner(UI.BackgroundImage, 24)
-
-UI.BackgroundShade = new("Frame", {
-Name = "BackgroundShade",
-Size = UDim2.fromScale(1, 1),
-BackgroundColor3 = Color3.fromRGB(8, 8, 10),
-BackgroundTransparency = 0.74,
-BorderSizePixel = 0,
-ZIndex = 2,
-}, Window)
-corner(UI.BackgroundShade, 24)
+-- Background image and dark overlay removed: the menu uses a clean white surface.
 
 UI.Header = new("Frame", {
 Name = "Header",
-Size = UDim2.new(1, 0, 0, 82),
-BackgroundTransparency = 1,
+Size = UDim2.new(1, 0, 0, 42),
+BackgroundColor3 = Color3.fromRGB(63, 126, 163),
+BackgroundTransparency = 0,
 Active = true,
 ZIndex = 3,
 }, Window)
@@ -2005,6 +1956,7 @@ BackgroundTransparency = 0.08,
 BorderSizePixel = 0,
 }, UI.Header)
 corner(UI.HeaderLogoFrame, 99)
+UI.HeaderLogoFrame.Visible = false
 
 UI.HeaderLogo = new("ImageLabel", {
 Size = UDim2.fromOffset(42, 42),
@@ -2018,22 +1970,25 @@ corner(UI.HeaderLogo, 99)
 
 UI.Brand = label(UI.Header, "SoloGAMEXs CODE REDEEMER", 14, Theme.Text, Enum.Font.GothamBlack, Enum.TextXAlignment.Left)
 UI.Brand.RichText = true
-UI.Brand.Text = '<font color="rgb(235,38,48)">SoloGAMEXs</font><font color="rgb(255,255,255)"> CODE REDEEMER</font>'
-UI.Brand.Size = UDim2.fromOffset(215, 22)
-UI.Brand.Position = UDim2.fromOffset(79, 20)
+UI.Brand.Text = "SoloGAMEXs CODE REDEEMER"
+UI.Brand.Size = UDim2.new(1, -112, 0, 26)
+UI.Brand.Position = UDim2.fromOffset(12, 7)
+UI.Brand.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 UI.SubTitle = label(UI.Header, "SNIPE ENGINE  •  LISTENING", 9, Theme.Dim, Enum.Font.GothamMedium, Enum.TextXAlignment.Left)
 UI.SubTitle.Size = UDim2.fromOffset(210, 16)
-UI.SubTitle.Position = UDim2.fromOffset(79, 42)
+UI.SubTitle.Position = UDim2.fromOffset(12, 25)
 
 UI.DebobHeader = label(UI.Header, "SoloGAMEX is my sempai", 7, Color3.fromRGB(255, 143, 149),
 Enum.Font.GothamBold, Enum.TextXAlignment.Left)
 UI.DebobHeader.Size = UDim2.fromOffset(150, 14)
 UI.DebobHeader.Position = UDim2.fromOffset(79, 59)
+UI.DebobHeader.Visible = false
 
 UI.LiveDot = new("Frame", {
 Size = UDim2.fromOffset(7, 7),
-Position = UDim2.fromOffset(286, 47),
+-- Keep the status dot attached visually to the header switch.
+Position = UDim2.new(1, -108, 0, 17),
 BackgroundColor3 = Theme.ToggleOff,
 BorderSizePixel = 0,
 }, UI.Header)
@@ -2043,8 +1998,8 @@ local function headerButton(text, xOffset)
   local b = new("TextButton", {
   Size = UDim2.fromOffset(16, 16),
   Position = UDim2.new(1, xOffset, 0, 6),
-  BackgroundColor3 = Theme.Row,
-  BackgroundTransparency = 0.3,
+  BackgroundColor3 = (text == "×") and Color3.fromRGB(205, 48, 55) or Color3.fromRGB(47, 105, 143),
+  BackgroundTransparency = 0,
   BorderSizePixel = 0,
   AutoButtonColor = false,
   Active = true,
@@ -2053,10 +2008,14 @@ local function headerButton(text, xOffset)
   TextColor3 = Theme.Text,
   Font = Enum.Font.GothamBold,
 }, UI.Header)
-corner(b, 5)
-stroke(b, Theme.AccentLight, 1, 0.28)
-b.MouseEnter:Connect(function() tw(b, { BackgroundColor3 = Theme.RowHover }, 0.12) end)
-b.MouseLeave:Connect(function() tw(b, { BackgroundColor3 = Theme.Row }, 0.12) end)
+corner(b, 3)
+stroke(b, (text == "×") and Color3.fromRGB(255, 170, 170) or Color3.fromRGB(190, 225, 245), 1, 0.2)
+b.MouseEnter:Connect(function()
+  tw(b, { BackgroundColor3 = (text == "×") and Color3.fromRGB(155, 25, 32) or Color3.fromRGB(38, 91, 128) }, 0.12)
+end)
+b.MouseLeave:Connect(function()
+  tw(b, { BackgroundColor3 = (text == "×") and Color3.fromRGB(205, 48, 55) or Color3.fromRGB(47, 105, 143) }, 0.12)
+end)
 return b
 end
 UI.MinBtn   = headerButton("", -40)
@@ -2064,12 +2023,13 @@ UI.MinBtn.Visible = false
 UI.CloseBtn = headerButton("×", -12)
 UI.CloseBtn.Size = UDim2.fromOffset(18, 18)
 UI.CloseBtn.Position = UDim2.new(1, -27, 0, 5)
-UI.CloseBtn.Visible = false
+UI.CloseBtn.Visible = true
 
 local Power = new("TextButton", {
 Name = "Power",
-Size = UDim2.fromOffset(74, 36),
-Position = UDim2.new(1, -92, 0, 30),
+Size = UDim2.fromOffset(64, 26),
+-- Shift the switch left so it never overlaps the red X close button.
+Position = UDim2.new(1, -96, 0, 7),
 BackgroundColor3 = cfg.sniper and CURSED_RED or Theme.ToggleOff,
 BorderSizePixel = 0,
 AutoButtonColor = false,
@@ -2077,11 +2037,11 @@ Active = true,
 Text = "",
 Visible = true,
 }, UI.Header)
-corner(Power, 99)
+corner(Power, 0)
 stroke(Power, Color3.fromRGB(255, 255, 255), 1, 0.45)
 UI.PowerDot = new("Frame", {
-Size = UDim2.fromOffset(28, 28),
-Position = cfg.sniper and UDim2.new(1, -32, 0.5, -14) or UDim2.new(0, 4, 0.5, -14),
+Size = UDim2.fromOffset(20, 20),
+Position = cfg.sniper and UDim2.new(1, -22, 0.5, -10) or UDim2.new(0, 2, 0.5, -10),
 BackgroundColor3 = Color3.fromRGB(248, 248, 250),
 BorderSizePixel = 0,
 }, Power)
@@ -2089,7 +2049,7 @@ corner(UI.PowerDot, 99)
 
 UI.HeaderDivider = new("Frame", {
 Size = UDim2.new(1, -30, 0, 1),
-Position = UDim2.new(0, 15, 0, 80),
+Position = UDim2.new(0, 15, 0, 62),
 BackgroundColor3 = Theme.AccentLight,
 BackgroundTransparency = 0.04,
 BorderSizePixel = 0,
@@ -2104,13 +2064,13 @@ NumberSequenceKeypoint.new(0, 1), NumberSequenceKeypoint.new(0.5, 0), NumberSequ
 UI.TabBar = new("Frame", {
 Name = "Tabs",
 Size = UDim2.new(1, -28, 0, 38),
-Position = UDim2.fromOffset(14, 90),
+Position = UDim2.fromOffset(14, 68),
 BackgroundColor3 = Color3.fromRGB(7, 7, 10),
 BackgroundTransparency = 0.28,
 BorderSizePixel = 0,
 ZIndex = 4,
 }, Window)
-corner(UI.TabBar, 13)
+corner(UI.TabBar, 0)
 stroke(UI.TabBar, Color3.fromRGB(94, 40, 45), 1, 0.35)
 local function createTab(text, position)
   local button = new("TextButton", {
@@ -2126,7 +2086,7 @@ local function createTab(text, position)
   Font = Enum.Font.GothamBlack,
   ZIndex = 5,
 }, UI.TabBar)
-corner(button, 10)
+corner(button, 0)
 return button
 end
 
@@ -2135,8 +2095,8 @@ UI.HelperTab = createTab("HELPER", UDim2.new(0.5, 0, 0, 3))
 
 local Body = new("Frame", {
 Name = "MainPage",
-Size = UDim2.new(1, -28, 1, -152),
-Position = UDim2.fromOffset(14, 138),
+Size = UDim2.new(1, -28, 1, -130),
+Position = UDim2.fromOffset(14, 116),
 BackgroundTransparency = 1,
 ZIndex = 3,
 }, Window)
@@ -2150,10 +2110,10 @@ local function makeFeatureCard(position, titleText, noteText, initial, onChange)
   BackgroundTransparency = 0.18,
   BorderSizePixel = 0,
 }, Body)
-corner(card, 18)
+-- Rectangular feature panel (AUTO SUBMIT / RIDDLE SOLVER)
 local cardStroke = stroke(card, Color3.fromRGB(83, 83, 92), 1, 0.28)
 
-local title = label(card, titleText, 11, Theme.Text, Enum.Font.GothamBold)
+local title = label(card, titleText, 11, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBold)
 title.Size = UDim2.fromOffset(104, 22)
 title.Position = UDim2.fromOffset(13, 19)
 
@@ -2164,7 +2124,7 @@ note.Position = UDim2.fromOffset(13, 42)
 local button = new("TextButton", {
 Size = UDim2.fromOffset(58, 34),
 Position = UDim2.new(1, -71, 0.5, -17),
-BackgroundColor3 = initial and Color3.fromRGB(246, 246, 248) or Theme.ToggleOff2,
+BackgroundColor3 = initial and Color3.fromRGB(246, 246, 248) or Color3.fromRGB(31, 31, 37),
 BorderSizePixel = 0,
 AutoButtonColor = false,
 Active = true,
@@ -2173,12 +2133,11 @@ TextColor3 = initial and Color3.fromRGB(18, 18, 21) or Theme.Text,
 Font = Enum.Font.GothamBlack,
 TextSize = 10,
 }, card)
-corner(button, 12)
-
+corner(button, 0)
 local state = initial
 local function render(value)
   state = value
-  tw(button, { BackgroundColor3 = value and Color3.fromRGB(246, 246, 248) or Theme.ToggleOff2 }, 0.12)
+  tw(button, { BackgroundColor3 = value and Color3.fromRGB(246, 246, 248) or Color3.fromRGB(31, 31, 37) }, 0.12)
   tw(cardStroke, { Color = value and CURSED_RED or Color3.fromRGB(83, 83, 92) }, 0.12)
   button.Text = value and "ON" or "OFF"
   button.TextColor3 = value and Color3.fromRGB(18, 18, 21) or Theme.Text
@@ -2213,10 +2172,10 @@ do
   BackgroundTransparency = 0.16,
   BorderSizePixel = 0,
 }, Body)
-corner(holder, 18)
+-- Rectangular REDEEM MODE panel
 stroke(holder, Color3.fromRGB(83, 83, 92), 1, 0.28)
 
-local modeTitle = label(holder, "REDEEM MODE", 11, Theme.Text, Enum.Font.GothamBold)
+local modeTitle = label(holder, "REDEEM MODE", 11, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBold)
 modeTitle.Size = UDim2.fromOffset(150, 22)
 modeTitle.Position = UDim2.fromOffset(14, 12)
 local modeNote = label(holder, "fragments required before submit", 8, Theme.Dim, Enum.Font.GothamMedium)
@@ -2230,7 +2189,7 @@ BackgroundColor3 = Color3.fromRGB(8, 8, 11),
 BackgroundTransparency = 0.05,
 BorderSizePixel = 0,
 }, holder)
-corner(selector, 15)
+corner(selector, 0)
 stroke(selector, Color3.fromRGB(67, 67, 75), 1, 0.15)
 
 local function modeButton(text, x)
@@ -2246,11 +2205,11 @@ local function modeButton(text, x)
   TextColor3 = Theme.Text,
   Font = Enum.Font.GothamBlack,
 }, selector)
-corner(button, 12)
+corner(button, 0)
 return button
 end
 local minusButton = modeButton("-", 3)
-local valueLabel = label(selector, tostring(cfg.submitAfter), 17, Theme.Text,
+local valueLabel = label(selector, tostring(cfg.submitAfter), 17, Theme.Accent,
 Enum.Font.GothamBlack, Enum.TextXAlignment.Center)
 valueLabel.Size = UDim2.fromOffset(52, 44)
 valueLabel.Position = UDim2.fromOffset(45, 0)
@@ -2277,15 +2236,15 @@ BackgroundColor3 = Color3.fromRGB(14, 14, 18),
 BackgroundTransparency = 0.16,
 BorderSizePixel = 0,
 }, Body)
-corner(UI.RetypeRow, 18)
+-- Rectangular AUTO RETYPE INVALID panel
 UI.RetypeStroke = stroke(UI.RetypeRow, cfg.retypeInvalid and CURSED_RED or Color3.fromRGB(83, 83, 92), 1, 0.28)
-UI.RetypeTitle = label(UI.RetypeRow, "AUTO RETYPE INVALID", 11, Theme.Text, Enum.Font.GothamBold)
+UI.RetypeTitle = label(UI.RetypeRow, "AUTO RETYPE INVALID", 11, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBold)
 UI.RetypeTitle.Size = UDim2.fromOffset(220, 58)
 UI.RetypeTitle.Position = UDim2.fromOffset(14, 0)
 UI.RetypeBtn = new("TextButton", {
 Size = UDim2.fromOffset(68, 34),
 Position = UDim2.new(1, -82, 0.5, -17),
-BackgroundColor3 = cfg.retypeInvalid and Color3.fromRGB(246, 246, 248) or Theme.ToggleOff2,
+BackgroundColor3 = cfg.retypeInvalid and Color3.fromRGB(246, 246, 248) or Color3.fromRGB(31, 31, 37),
 BorderSizePixel = 0,
 AutoButtonColor = false,
 Active = true,
@@ -2300,7 +2259,7 @@ bindClick(UI.RetypeBtn, function()
   retypeState = not retypeState
   cfg.retypeInvalid = retypeState
   saveConfig()
-  tw(UI.RetypeBtn, { BackgroundColor3 = retypeState and Color3.fromRGB(246, 246, 248) or Theme.ToggleOff2 }, 0.12)
+  tw(UI.RetypeBtn, { BackgroundColor3 = retypeState and Color3.fromRGB(246, 246, 248) or Color3.fromRGB(31, 31, 37) }, 0.12)
   tw(UI.RetypeStroke, { Color = retypeState and CURSED_RED or Color3.fromRGB(83, 83, 92) }, 0.12)
   UI.RetypeBtn.Text = retypeState and "ON" or "OFF"
   UI.RetypeBtn.TextColor3 = retypeState and Color3.fromRGB(18, 18, 21) or Theme.Text
@@ -2314,7 +2273,7 @@ Position = UDim2.fromOffset(0, 244),
 BackgroundTransparency = 1,
 }, Body)
 
-UI.ConsoleTitle = label(UI.ConsoleBar, "CONSOLE", 9, Theme.Dim, Enum.Font.GothamBlack)
+UI.ConsoleTitle = label(UI.ConsoleBar, "CONSOLE", 9, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBlack)
 UI.ConsoleTitle.Text = "REDEEMED CODE / RESULT"
 UI.ConsoleTitle.Size = UDim2.fromOffset(180, 16)
 UI.ConsoleTitle.Position = UDim2.fromOffset(4, 0)
@@ -2353,7 +2312,7 @@ CanvasSize = UDim2.new(0, 0, 0, 0),
 AutomaticCanvasSize = Enum.AutomaticSize.None,
 ElasticBehavior = Enum.ElasticBehavior.WhenScrollable,
 }, Body)
-corner(UI.Console, 18)
+-- Rectangular REDEEMED CODE / RESULT panel
 stroke(UI.Console, Color3.fromRGB(83, 83, 92), 1, 0.22)
 
 local ConsoleText = new("TextLabel", {
@@ -2383,7 +2342,7 @@ ZIndex = 3,
 
 UI.HelperTitle = label(UI.HelperPage, "AA HELPER", 17, Theme.Text, Enum.Font.GothamBlack)
 UI.HelperTitle.RichText = true
-UI.HelperTitle.Text = '<font color="rgb(235,38,48)">AA</font><font color="rgb(255,255,255)"> HELPER</font>'
+UI.HelperTitle.Text = '<font color="rgb(65,145,205)">AA</font><font color="rgb(255,255,255)"> HELPER</font>'
 UI.HelperTitle.Size = UDim2.new(1, 0, 0, 25)
 UI.HelperTitle.Position = UDim2.fromOffset(4, 0)
 UI.HelperSub = label(UI.HelperPage, "UTILITY CONTROLS", 8, Theme.Dim, Enum.Font.GothamBold)
@@ -2398,9 +2357,9 @@ local function makeValueControl(y, titleText, noteText, valueText)
   BackgroundTransparency = 0.38,
   BorderSizePixel = 0,
 }, UI.HelperPage)
-corner(row, 16)
+-- Rectangular helper value panel
 stroke(row, Color3.fromRGB(95, 45, 50), 1, 0.48)
-local title = label(row, titleText, 11, Theme.Text, Enum.Font.GothamBold)
+local title = label(row, titleText, 11, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBold)
 title.Size = UDim2.fromOffset(150, 22)
 title.Position = UDim2.fromOffset(14, 10)
 local note = label(row, noteText, 8, Theme.Dim, Enum.Font.GothamMedium)
@@ -2414,23 +2373,23 @@ BackgroundColor3 = Color3.fromRGB(8, 8, 11),
 BackgroundTransparency = 0.06,
 BorderSizePixel = 0,
 }, row)
-corner(control, 13)
+corner(control, 0)
 stroke(control, Color3.fromRGB(76, 76, 84), 1, 0.28)
 
 local function smallButton(text, x)
   local button = new("TextButton", {
   Size = UDim2.fromOffset(38, 36),
   Position = UDim2.fromOffset(x, 3),
-  BackgroundColor3 = Color3.fromRGB(35, 35, 41),
-  BorderSizePixel = 0,
+  BackgroundColor3 = Theme.Row,
+  BackgroundTransparency = 0,  BorderSizePixel = 0,
   AutoButtonColor = false,
   Active = true,
   Text = text,
-  TextSize = 16,
+  TextSize = 17,
   TextColor3 = Theme.Text,
   Font = Enum.Font.GothamBlack,
 }, control)
-corner(button, 11)
+corner(button, 0)
 return button
 end
 local minus = smallButton("-", 3)
@@ -2441,7 +2400,7 @@ Position = UDim2.fromOffset(43, 3),
 BackgroundTransparency = 1,
 ClearTextOnFocus = false,
 Text = valueText,
-TextColor3 = Theme.Text,
+TextColor3 = Theme.Accent,
 TextSize = 12,
 Font = Enum.Font.GothamBlack,
 TextXAlignment = Enum.TextXAlignment.Center,
@@ -2481,9 +2440,9 @@ local function makeHelperToggle(y, titleText, noteText, onChange)
   BackgroundTransparency = 0.34,
   BorderSizePixel = 0,
 }, UI.HelperPage)
-corner(row, 16)
+-- Rectangular helper toggle panel
 local rowStroke = stroke(row, Color3.fromRGB(95, 45, 50), 1, 0.48)
-local title = label(row, titleText, 12, Theme.Text, Enum.Font.GothamBlack)
+local title = label(row, titleText, 12, Color3.fromRGB(255, 255, 255), Enum.Font.GothamBlack)
 title.Size = UDim2.fromOffset(190, 24)
 title.Position = UDim2.fromOffset(15, 9)
 local note = label(row, noteText, 8, Theme.Dim, Enum.Font.GothamMedium)
@@ -2501,7 +2460,7 @@ TextColor3 = Theme.Text,
 TextSize = 11,
 Font = Enum.Font.GothamBlack,
 }, row)
-corner(button, 13)
+corner(button, 0)
 local state = false
 bindClick(button, function()
   state = not state
@@ -2527,8 +2486,8 @@ local function showPage(name)
   local helper = name == "HELPER"
   Body.Visible = not helper
   UI.HelperPage.Visible = helper
-  tw(UI.MainTab, { BackgroundColor3 = helper and Color3.fromRGB(23, 23, 28) or Color3.fromRGB(117, 13, 24) }, 0.12)
-  tw(UI.HelperTab, { BackgroundColor3 = helper and Color3.fromRGB(117, 13, 24) or Color3.fromRGB(23, 23, 28) }, 0.12)
+  tw(UI.MainTab, { BackgroundColor3 = helper and Color3.fromRGB(23, 23, 28) or Color3.fromRGB(74, 177, 218) }, 0.12)
+  tw(UI.HelperTab, { BackgroundColor3 = helper and Color3.fromRGB(74, 177, 218) or Color3.fromRGB(23, 23, 28) }, 0.12)
   UI.MainTab.TextColor3 = helper and Theme.Dim or Theme.Text
   UI.HelperTab.TextColor3 = helper and Theme.Text or Theme.Dim
 end
@@ -2551,36 +2510,38 @@ BorderSizePixel = 0,
 ClearTextOnFocus = false,
 Text = "",
 PlaceholderText = "captured / type code...",
-PlaceholderColor3 = Theme.Dim,
+PlaceholderColor3 = Color3.fromRGB(255, 255, 255),
 TextSize = 11,
 Font = Enum.Font.GothamBold,
-TextColor3 = Theme.Text,
+TextColor3 = Color3.fromRGB(255, 255, 255),
 TextXAlignment = Enum.TextXAlignment.Left,
 }, UI.CodeRow)
-corner(UI.CodeBox, 9)
-stroke(UI.CodeBox, CURSED_RED, 1, 0.22)
+corner(UI.CodeBox, 0)
+UI.CodeBox.BackgroundColor3 = Color3.fromRGB(151, 155, 158)
+UI.CodeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+stroke(UI.CodeBox, Color3.fromRGB(35, 35, 35), 1, 0.08)
 new("UIPadding", { PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 8) }, UI.CodeBox)
 
 UI.CodeRedeemBtn = new("TextButton", {
 Name = "ManualRedeemButton",
 Size = UDim2.fromOffset(78, 30),
 Position = UDim2.new(1, -78, 0, 0),
-BackgroundColor3 = Color3.fromRGB(240, 240, 244),
+BackgroundColor3 = Color3.fromRGB(76, 190, 95),
 BorderSizePixel = 0,
 AutoButtonColor = false,
 Active = true,
-Text = "REDEEM",
+Text = "Submit",
 TextSize = 10,
 TextColor3 = Color3.fromRGB(15, 15, 18),
 Font = Enum.Font.GothamBlack,
 }, UI.CodeRow)
-corner(UI.CodeRedeemBtn, 9)
-stroke(UI.CodeRedeemBtn, CURSED_RED, 1, 0.28)
+corner(UI.CodeRedeemBtn, 2)
+stroke(UI.CodeRedeemBtn, Color3.fromRGB(32, 90, 43), 1, 0.1)
 UI.CodeRedeemBtn.MouseEnter:Connect(function()
-  tw(UI.CodeRedeemBtn, { BackgroundColor3 = Color3.fromRGB(255, 255, 255) }, 0.12)
+  tw(UI.CodeRedeemBtn, { BackgroundColor3 = Color3.fromRGB(95, 210, 112) }, 0.12)
 end)
 UI.CodeRedeemBtn.MouseLeave:Connect(function()
-  tw(UI.CodeRedeemBtn, { BackgroundColor3 = Color3.fromRGB(240, 240, 244) }, 0.12)
+  tw(UI.CodeRedeemBtn, { BackgroundColor3 = Color3.fromRGB(76, 190, 95) }, 0.12)
 end)
 
 UI.AskRow = new("Frame", {
@@ -2604,7 +2565,7 @@ Font = Enum.Font.GothamMedium,
 TextColor3 = Theme.Text,
 TextXAlignment = Enum.TextXAlignment.Left,
 }, UI.AskRow)
-corner(UI.AskBox, 9)
+-- Rectangular Ask AI input background
 stroke(UI.AskBox, Theme.AccentLight, 1, 0.28)
 new("UIPadding", { PaddingLeft = UDim.new(0, 10), PaddingRight = UDim.new(0, 8) }, UI.AskBox)
 
@@ -2717,7 +2678,7 @@ end)
 applyPowerVisual = function()
   local on = cfg.sniper
   tw(Power, { BackgroundColor3 = on and CURSED_RED or Theme.ToggleOff }, 0.12)
-  tw(UI.PowerDot, { Position = on and UDim2.new(1, -32, 0.5, -14) or UDim2.new(0, 4, 0.5, -14) }, 0.12)
+  tw(UI.PowerDot, { Position = on and UDim2.new(1, -22, 0.5, -10) or UDim2.new(0, 2, 0.5, -10) }, 0.12)
   tw(UI.LiveDot, { BackgroundColor3 = on and Theme.Green or Theme.ToggleOff }, 0.12)
   UI.SubTitle.Text = on and "SNIPE ENGINE  •  LISTENING" or "SNIPE ENGINE  •  PAUSED"
   UI.SubTitle.TextColor3 = on and Theme.Green or Theme.Dim
@@ -2751,8 +2712,10 @@ local function setMenuOpen(open)
     Window.Size = UDim2.fromOffset(WIN_W, 38)
     tw(Window, { Size = UDim2.fromOffset(WIN_W, WIN_H) }, 0.18)
     MenuBtn.Text = "CLOSE"
+    tw(MenuBtn, { BackgroundColor3 = Color3.fromRGB(205, 48, 55) }, 0.12)
   else
   MenuBtn.Text = "MENU"
+  tw(MenuBtn, { BackgroundColor3 = Color3.fromRGB(46, 170, 86) }, 0.12)
   tw(Window, { Size = UDim2.fromOffset(WIN_W, 38) }, 0.14)
   task.delay(0.15, function()
     if not menuOpen then Window.Visible = false end
@@ -3041,7 +3004,7 @@ local function runRiddle(question)
   if apiAnswer then
     answer = apiAnswer
     breakdown = { "AI = " .. apiAnswer }
-    note = "Groq AI"
+    note = "OpenAI AI"
   else
   answer, breakdown, note = solveRiddle(question)
   if apiError then
